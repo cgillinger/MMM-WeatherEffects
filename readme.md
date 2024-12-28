@@ -2,7 +2,20 @@
 
 A MagicMirror² module that adds dynamic weather effects (rain and snow) based on current weather conditions. This module automatically displays appropriate weather effects based on real-time weather conditions.
 
-Version: 1.0.0 (Evolution of MMM-DynamicSnow v3.0.1)
+Version: 1.0.0
+
+## Quick Start
+
+Add this minimal configuration to your `config/config.js` to get started:
+
+```javascript
+{
+    module: "MMM-WeatherEffects",
+    position: "fullscreen_above"  // This position is required
+}
+```
+
+That's it! The module will work with all default settings. See the Configuration section below for customization options.
 
 ## Features
 - Automatic weather effect detection and display
@@ -37,7 +50,7 @@ git clone https://github.com/cgillinger/MMM-WeatherEffects.git
 ```
 
 ### Step 2: Configure Module
-Add to your `config/config.js`. Example configuration:
+After the minimal setup shown in Quick Start, you can customize the module using this full configuration example:
 
 ```javascript
 {
@@ -68,31 +81,31 @@ Add to your `config/config.js`. Example configuration:
 
 ### General Settings
 
-| Option | Description | Default | Notes |
-|--------|-------------|---------|--------|
-| `enabled` | Enable/disable module | `true` | Master switch |
-| `intensity` | Effect intensity | `"auto"` | Options: "auto", "light", "medium", "heavy" |
-| `transitionDuration` | Effect transition time | `1000` | In milliseconds |
+| Option | Description | Default | Required | Notes |
+|--------|-------------|---------|----------|--------|
+| `enabled` | Enable/disable module | `true` | No | Master switch |
+| `intensity` | Effect intensity | `"auto"` | No | Options: "auto", "light", "medium", "heavy" |
+| `transitionDuration` | Effect transition time | `1000` | No | In milliseconds |
 
 ### Rain Settings (`rainConfig`)
 
-| Option | Description | Default | Notes |
-|--------|-------------|---------|--------|
-| `dropletCount` | Number of raindrops | `50` | Range: 1-200 |
-| `dropletSpeed` | Rain falling speed | `2.0` | Range: 0.1-5.0 |
-| `windDirection` | Rain angle | `"none"` | Options: "none", "left-to-right", "right-to-left" |
-| `enableSplashes` | Show splash effects | `false` | Visual enhancement |
+| Option | Description | Default | Required | Notes |
+|--------|-------------|---------|----------|--------|
+| `dropletCount` | Number of raindrops | `50` | No | Range: 1-200 |
+| `dropletSpeed` | Rain falling speed | `2.0` | No | Range: 0.1-5.0 |
+| `windDirection` | Rain angle | `"none"` | No | Options: "none", "left-to-right", "right-to-left" |
+| `enableSplashes` | Show splash effects | `false` | No | Visual enhancement |
 
 ### Snow Settings (`snowConfig`)
 
-| Option | Description | Default | Notes |
-|--------|-------------|---------|--------|
-| `flakeCount` | Number of snowflakes | `25` | Range: 1-100 |
-| `characters` | Snowflake characters | `['*', '+']` | Array of characters |
-| `sparkleEnabled` | Enable sparkle effect | `false` | Visual enhancement |
-| `minSize` | Minimum flake size | `0.8` | In em units |
-| `maxSize` | Maximum flake size | `1.5` | In em units |
-| `speed` | Snow falling speed | `1.0` | Range: 0.1-5.0 |
+| Option | Description | Default | Required | Notes |
+|--------|-------------|---------|----------|--------|
+| `flakeCount` | Number of snowflakes | `25` | No | Range: 1-100 |
+| `characters` | Snowflake characters | `['*', '+']` | No | Array of characters |
+| `sparkleEnabled` | Enable sparkle effect | `false` | No | Visual enhancement |
+| `minSize` | Minimum flake size | `0.8` | No | In em units |
+| `maxSize` | Maximum flake size | `1.5` | No | In em units |
+| `speed` | Snow falling speed | `1.0` | No | Range: 0.1-5.0 |
 
 ## CSS Customization
 
