@@ -3,132 +3,154 @@
  * 
  * By Christian Gillinger
  * MIT Licensed.
+ * 
+ * Version: 1.0.0 (2024-12-28)
+ * 
+ * This CSS file contains all visual styling for the weather effects.
+ * Organized sections:
+ * - Base wrapper (positions all effects)
+ * - Rain effects (droplets and splashes)
+ * - Snow effects (flakes with color variations)
+ * - Animations (rain fall, snow fall, and transitions)
  */
 
 /* Base wrapper for all weather effects */
 .weather-effect-wrapper {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    pointer-events: none !important;
-    overflow: hidden !important;
-    z-index: 99999999 !important;
-    transition: opacity 1s ease-in-out;
+    position: fixed !important; /* Ensures the wrapper stays fixed in the viewport */
+    top: 0 !important; /* Aligns the wrapper to the top of the screen */
+    left: 0 !important; /* Aligns the wrapper to the left of the screen */
+    width: 100% !important; /* Covers the full width of the screen */
+    height: 100% !important; /* Covers the full height of the screen */
+    pointer-events: none !important; /* Prevents interaction with the effects */
+    overflow: hidden !important; /* Hides anything outside the wrapper */
+    z-index: 99999999 !important; /* Ensures the wrapper appears above all other elements */
+    transition: opacity 1s ease-in-out; /* Smooth transition for opacity changes */
 }
 
 /* Rain Effect Styles */
 .rain-particle {
-    position: absolute !important;
-    width: 2px;
-    height: 12px;
-    background: linear-gradient(to bottom, #00aaff, transparent);
-    opacity: 0.6;
-    border-radius: 50%;
-    pointer-events: none !important;
-    top: -20px;
-    left: calc(100% * var(--random-x, 0));
-    animation: rain-fall linear infinite;
-    z-index: 99999999 !important;
+    position: absolute !important; /* Positions each raindrop absolutely */
+    width: 4px; /* Increase width for thicker raindrops */
+    height: 16px; /* Increase length if desired */
+    background: linear-gradient(to bottom, #00aaff, transparent); /* You can also change color here */
+    opacity: 0.8; /* Make the drops more visible */
+    border-radius: 50%; /* Retain rounded ends */
+    pointer-events: none !important; /* Ensures no interaction with raindrops */
+    top: -20px; /* Starts raindrops slightly above the screen */
+    left: calc(100% * var(--random-x, 0)); /* Randomizes horizontal starting position */
+    animation: rain-fall linear infinite; /* Applies falling animation */
+    z-index: 99999999 !important; /* Ensures raindrops appear above other elements */
 }
 
 .rain-particle.left-to-right {
-    animation-name: rain-fall-diagonal-right;
+    animation-name: rain-fall-diagonal-right; /* Applies diagonal animation to the right */
 }
 
 .rain-particle.right-to-left {
-    animation-name: rain-fall-diagonal-left;
+    animation-name: rain-fall-diagonal-left; /* Applies diagonal animation to the left */
 }
 
 .rain-splash {
-    position: absolute;
-    bottom: 0;
-    width: 10px;
-    height: 2px;
-    background-color: #00aaff;
-    opacity: 0.5;
-    border-radius: 50%;
-    animation: splash-animation ease-out 0.3s infinite;
+    position: absolute; /* Positions splash at the bottom of the screen */
+    bottom: 0; /* Ensures the splash is aligned with the bottom */
+    width: 10px; /* Width of the splash */
+    height: 2px; /* Height of the splash */
+    background-color: #00aaff; /* Matches the color of the raindrops */
+    opacity: 0.5; /* Makes the splash slightly transparent */
+    border-radius: 50%; /* Gives the splash rounded edges */
+    animation: splash-animation ease-out 0.3s infinite; /* Applies splash animation */
 }
 
 /* Snow Effect Styles */
 .snow-particle {
-    position: absolute !important;
-    color: white;
-    opacity: 0.8;
-    pointer-events: none !important;
-    z-index: 99999999 !important;
-    animation: snow-fall linear infinite;
+    position: absolute !important; /* Positions each snowflake absolutely */
+    color: white; /* Default color of snowflakes */
+    opacity: 0.8; /* Makes the snowflakes slightly transparent */
+    pointer-events: none !important; /* Prevents interaction with snowflakes */
+    z-index: 99999999 !important; /* Ensures snowflakes appear above other elements */
+    animation: snow-fall linear infinite; /* Applies falling animation to snowflakes */
+}
+
+/* Color variations for snowflakes */
+.snow-particle.blue-light {
+    color: #BDE3FF !important; /* Light blue */
+}
+
+.snow-particle.blue-medium {
+    color: #99CCFF !important; /* Medium blue */
+}
+
+.snow-particle.blue-dark {
+    color: #66A3FF !important; /* Darker blue */
+}
+
+.snow-particle.crystal {
+    color: #F0F8FF !important; /* Almost white */
 }
 
 .snow-particle.sparkle {
-    transition: text-shadow 0.2s ease-in-out;
-    animation: snow-fall linear infinite, snow-sparkle 2s ease-in-out infinite;
-}
-
-.snow-particle.blue {
-    color: #BDE3FF !important;
+    transition: text-shadow 0.2s ease-in-out; /* Smooth transition for text-shadow effect */
+    animation: snow-fall linear infinite, snow-sparkle 2s ease-in-out infinite; /* Combines falling and sparkling animations */
 }
 
 /* Rain Animations */
 @keyframes rain-fall {
     0% {
-        transform: translateY(0);
-        opacity: 1;
+        transform: translateY(0); /* Starts raindrop at the top */
+        opacity: 1; /* Fully visible at the start */
     }
     100% {
-        transform: translateY(100vh);
-        opacity: 0.5;
+        transform: translateY(100vh); /* Moves raindrop to the bottom of the screen */
+        opacity: 0.5; /* Fades slightly by the end */
     }
 }
 
 @keyframes rain-fall-diagonal-right {
     0% {
-        transform: translate(0, 0);
+        transform: translate(0, 0); /* Starts at original position */
     }
     100% {
-        transform: translate(30vw, 100vh);
+        transform: translate(30vw, 100vh); /* Moves diagonally to the right and down */
     }
 }
 
 @keyframes rain-fall-diagonal-left {
     0% {
-        transform: translate(0, 0);
+        transform: translate(0, 0); /* Starts at original position */
     }
     100% {
-        transform: translate(-30vw, 100vh);
+        transform: translate(-30vw, 100vh); /* Moves diagonally to the left and down */
     }
 }
 
 @keyframes splash-animation {
     0% {
-        transform: scale(0.8);
-        opacity: 0.8;
+        transform: scale(0.8); /* Starts smaller */
+        opacity: 0.8; /* Fully visible at the start */
     }
     100% {
-        transform: scale(1.2);
-        opacity: 0;
+        transform: scale(1.2); /* Grows slightly */
+        opacity: 0; /* Fades out completely */
     }
 }
 
 /* Snow Animations */
 @keyframes snow-fall {
     0% {
-        transform: translateY(-10px) rotate(0deg);
+        transform: translateY(-10px) rotate(0deg); /* Starts just above the screen */
     }
     100% {
-        transform: translateY(100vh) rotate(360deg);
+        transform: translateY(100vh) rotate(360deg); /* Falls to the bottom with a full rotation */
     }
 }
 
 @keyframes snow-sparkle {
     0%, 100% {
-        opacity: 0.8;
-        text-shadow: none;
+        opacity: 0.8; /* Slightly transparent at the start and end */
+        text-shadow: none; /* No shadow initially */
     }
     50% {
-        opacity: 1;
-        text-shadow: 0 0 8px rgba(255,255,255,0.8);
+        opacity: 1; /* Fully visible at midpoint */
+        text-shadow: 0 0 8px rgba(255,255,255,0.8); /* Adds a glowing effect */
     }
 }

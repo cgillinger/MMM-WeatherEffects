@@ -1,8 +1,33 @@
 /* MagicMirror²
  * Module: MMM-WeatherEffects
- * Description: Dynamic weather effects (snow and rain) based on current weather conditions
+ * 
  * By Christian Gillinger
  * MIT Licensed.
+ * 
+ * Version: 1.0.0 (2024-12-28)
+ * 
+ * Description:
+ * This module creates dynamic weather effects for MagicMirror², automatically
+ * displaying rain or snow based on current weather conditions. Effects include
+ * directional rain with optional splashes and multi-colored snowflakes with
+ * sparkle effects.
+ * 
+ * Features:
+ * - Automatic weather condition detection
+ * - Rain effects with wind direction
+ * - Multi-colored snow particles
+ * - Smooth transitions between states
+ * - Performance optimized animations
+ * 
+ * Changelog:
+ * v1.0.0 (2024-12-28)
+ * - Initial release
+ * - Added rain effects with wind direction support
+ * - Added multi-color snow variations
+ * - Integrated smooth state transitions
+ * - Added weather condition detection
+ * - Implemented performance management
+ * - Added comprehensive documentation
  */
 
 Module.register("MMM-WeatherEffects", {
@@ -39,6 +64,7 @@ Module.register("MMM-WeatherEffects", {
         snow: ["snow", "sleet", "blizzard", "flurries"]
     },
     effectContainers: {},
+    snowColorClasses: ['', 'blue-light', 'blue-medium', 'blue-dark', 'crystal'],
 
     start: function() {
         Log.info("Starting module: " + this.name);
@@ -169,12 +195,17 @@ Module.register("MMM-WeatherEffects", {
         }
     },
 
+    getRandomSnowColor: function() {
+        return this.snowColorClasses[Math.floor(Math.random() * this.snowColorClasses.length)];
+    },
+
     createSnowEffect: function(container) {
         const { flakeCount, characters, sparkleEnabled, minSize, maxSize, speed } = this.config.snowConfig;
         
         for (let i = 0; i < flakeCount; i++) {
             const flake = document.createElement("div");
-            flake.className = `snow-particle ${sparkleEnabled ? 'sparkle' : ''}`;
+            const colorClass = this.getRandomSnowColor();
+            flake.className = `snow-particle ${sparkleEnabled ? 'sparkle' : ''} ${colorClass}`;
             flake.innerHTML = characters[Math.floor(Math.random() * characters.length)];
             flake.style.animationDuration = `${(Math.random() * 2 + 3) / speed}s`;
             flake.style.fontSize = `${Math.random() * (maxSize - minSize) + minSize}em`;
