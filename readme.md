@@ -62,8 +62,7 @@ After the minimal setup shown in Quick Start, you can customize the module using
         rainConfig: {
             dropletCount: 50,
             dropletSpeed: 2.0,
-            windDirection: "none",
-            enableSplashes: false
+            windDirection: "none"  // none, left-to-right, right-to-left
         },
         snowConfig: {
             flakeCount: 25,
@@ -94,7 +93,6 @@ After the minimal setup shown in Quick Start, you can customize the module using
 | `dropletCount` | Number of raindrops | `50` | No | Range: 1-200 |
 | `dropletSpeed` | Rain falling speed | `2.0` | No | Range: 0.1-5.0 |
 | `windDirection` | Rain angle | `"none"` | No | Options: "none", "left-to-right", "right-to-left" |
-| `enableSplashes` | Show splash effects | `false` | No | Visual enhancement |
 
 ### Snow Settings (`snowConfig`)
 
@@ -121,14 +119,6 @@ You can modify the rain appearance in your custom CSS:
     height: 16px;        /* Length of raindrops */
     opacity: 0.8;        /* Transparency (0.0 to 1.0) */
     background: linear-gradient(to bottom, #00aaff, transparent); /* Color of rain */
-}
-
-/* Customize rain splash effect */
-.rain-splash {
-    width: 10px;         /* Size of splash */
-    height: 2px;         /* Height of splash */
-    background-color: #00aaff; /* Color of splash */
-    opacity: 0.5;        /* Splash transparency */
 }
 ```
 
@@ -193,8 +183,7 @@ Remember: Small changes can have a big impact on appearance. Start with small ad
     module: "MMM-WeatherEffects",
     config: {
         rainConfig: {
-            dropletCount: 30,
-            enableSplashes: false
+            dropletCount: 30
         },
         snowConfig: {
             flakeCount: 15,
@@ -211,8 +200,7 @@ Remember: Small changes can have a big impact on appearance. Start with small ad
     module: "MMM-WeatherEffects",
     config: {
         rainConfig: {
-            dropletCount: 100,
-            enableSplashes: true
+            dropletCount: 100
         },
         snowConfig: {
             flakeCount: 50,
@@ -257,7 +245,7 @@ The module includes a `weatherKeywords.json` file for customizing weather condit
 
 2. **Performance issues:**
    - Reduce `dropletCount`/`flakeCount`
-   - Disable special effects (splashes, sparkle)
+   - Disable special effects like sparkle
    - Use simpler characters for snow
    - Reduce max sizes
 
