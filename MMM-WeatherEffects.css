@@ -1,0 +1,134 @@
+/* MagicMirror²
+ * Module: MMM-WeatherEffects
+ * 
+ * By Christian Gillinger
+ * MIT Licensed.
+ */
+
+/* Base wrapper for all weather effects */
+.weather-effect-wrapper {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    z-index: 99999999 !important;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Rain Effect Styles */
+.rain-particle {
+    position: absolute !important;
+    width: 2px;
+    height: 12px;
+    background: linear-gradient(to bottom, #00aaff, transparent);
+    opacity: 0.6;
+    border-radius: 50%;
+    pointer-events: none !important;
+    top: -20px;
+    left: calc(100% * var(--random-x, 0));
+    animation: rain-fall linear infinite;
+    z-index: 99999999 !important;
+}
+
+.rain-particle.left-to-right {
+    animation-name: rain-fall-diagonal-right;
+}
+
+.rain-particle.right-to-left {
+    animation-name: rain-fall-diagonal-left;
+}
+
+.rain-splash {
+    position: absolute;
+    bottom: 0;
+    width: 10px;
+    height: 2px;
+    background-color: #00aaff;
+    opacity: 0.5;
+    border-radius: 50%;
+    animation: splash-animation ease-out 0.3s infinite;
+}
+
+/* Snow Effect Styles */
+.snow-particle {
+    position: absolute !important;
+    color: white;
+    opacity: 0.8;
+    pointer-events: none !important;
+    z-index: 99999999 !important;
+    animation: snow-fall linear infinite;
+}
+
+.snow-particle.sparkle {
+    transition: text-shadow 0.2s ease-in-out;
+    animation: snow-fall linear infinite, snow-sparkle 2s ease-in-out infinite;
+}
+
+.snow-particle.blue {
+    color: #BDE3FF !important;
+}
+
+/* Rain Animations */
+@keyframes rain-fall {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0.5;
+    }
+}
+
+@keyframes rain-fall-diagonal-right {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(30vw, 100vh);
+    }
+}
+
+@keyframes rain-fall-diagonal-left {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-30vw, 100vh);
+    }
+}
+
+@keyframes splash-animation {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Snow Animations */
+@keyframes snow-fall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+@keyframes snow-sparkle {
+    0%, 100% {
+        opacity: 0.8;
+        text-shadow: none;
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 8px rgba(255,255,255,0.8);
+    }
+}

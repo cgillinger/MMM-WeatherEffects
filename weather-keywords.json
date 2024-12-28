@@ -1,0 +1,25 @@
+{
+    "effects": {
+        "rain": [
+            "rain",
+            "showers",
+            "drizzle",
+            "precipitation",
+            "light_rain",
+            "heavy_rain",
+            "rain_showers",
+            "scattered_showers"
+        ],
+        "snow": [
+            "snow",
+            "sleet",
+            "blizzard",
+            "flurries",
+            "light_snow",
+            "heavy_snow",
+            "snow_showers",
+            "winter_storm",
+            "snow_grains"
+        ]
+    }
+}

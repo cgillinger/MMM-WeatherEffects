@@ -1,0 +1,26 @@
+{
+    "name": "mmm-weathereffects",
+    "version": "1.0.0",
+    "description": "A MagicMirror module that adds dynamic weather effects (snow and rain) based on current weather conditions",
+    "main": "MMM-WeatherEffects.js",
+    "keywords": [
+        "magicmirror",
+        "snow",
+        "rain",
+        "effect",
+        "weather",
+        "animation",
+        "dynamic"
+    ],
+    "author": "Christian Gillinger",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cgillinger/MMM-WeatherEffects.git"
+    },
+    "bugs": {
+        "url": "https://github.com/cgillinger/MMM-WeatherEffects/issues"
+    },
+    "homepage": "https://github.com/cgillinger/MMM-WeatherEffects#readme",
+    "dependencies": {}
+}
