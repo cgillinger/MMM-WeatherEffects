@@ -4,7 +4,7 @@
  * By Christian Gillinger
  * MIT Licensed.
  * 
- * Version: 1.0.0 (2024-12-28)
+ * Version: 1.0.1 (2026-01-11)
  * 
  * Description:
  * This module creates dynamic weather effects for MagicMirror², automatically
@@ -18,8 +18,14 @@
  * - Multi-colored snow particles
  * - Smooth transitions between states
  * - Performance optimized animations
+ * - Portrait and landscape mode support
  * 
  * Changelog:
+ * v1.0.1 (2026-01-11)
+ * - Fixed: Portrait mode coverage - particles now distributed across full screen height
+ * - Added: Random vertical start positions for particles
+ * - Added: Staggered animation delays for natural flow
+ * 
  * v1.0.0 (2024-12-28)
  * - Initial release
  * - Added rain effects with wind direction support
@@ -183,7 +189,11 @@ Module.register("MMM-WeatherEffects", {
             const droplet = document.createElement("div");
             droplet.className = `rain-particle ${windDirection}`;
             droplet.style.animationDuration = `${dropletSpeed + Math.random()}s`;
+            // Random vertical start position above viewport for portrait/landscape support
+            droplet.style.top = `${Math.random() * -190 - 10}px`; // -200px to -10px
             droplet.style.left = `${Math.random() * 100}%`;
+            // Staggered start for natural flow
+            droplet.style.animationDelay = `${Math.random() * 5}s`;
 
             if (enableSplashes) {
                 const splash = document.createElement("div");
@@ -209,7 +219,11 @@ Module.register("MMM-WeatherEffects", {
             flake.innerHTML = characters[Math.floor(Math.random() * characters.length)];
             flake.style.animationDuration = `${(Math.random() * 2 + 3) / speed}s`;
             flake.style.fontSize = `${Math.random() * (maxSize - minSize) + minSize}em`;
+            // Random vertical start position above viewport for portrait/landscape support
+            flake.style.top = `${Math.random() * -190 - 10}px`; // -200px to -10px
             flake.style.left = `${Math.random() * 100}%`;
+            // Staggered start for natural flow
+            flake.style.animationDelay = `${Math.random() * 5}s`;
             
             container.appendChild(flake);
         }
