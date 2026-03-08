@@ -1,56 +1,81 @@
 # MMM-WeatherEffects
 
-A MagicMirror² module that adds dynamic weather effects (rain and snow) based on current weather conditions. This module automatically displays appropriate weather effects based on real-time weather conditions.
+<div align="center">
 
-Version: 1.0.0
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/cgillinger/MMM-WeatherEffects)
+[![MagicMirror²](https://img.shields.io/badge/MagicMirror²-%3E%3D2.20.0-brightgreen.svg)](https://magicmirror.builders)
+[![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi%20%7C%20Desktop-lightgrey.svg)](https://github.com/cgillinger/MMM-WeatherEffects)
+[![GitHub Issues](https://img.shields.io/github/issues/cgillinger/MMM-WeatherEffects.svg)](https://github.com/cgillinger/MMM-WeatherEffects/issues)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/cgillinger/MMM-WeatherEffects/pulls)
+
+**A MagicMirror² module that adds immersive, dynamic weather effects — rain and snow — based on real-time weather conditions.**
+
+_Automatically detects your current weather and renders stunning fullscreen animations on your Magic Mirror display._
+
+[Quick Start](#quick-start) · [Configuration](#configuration-options) · [Screenshots](#visual-examples) · [Troubleshooting](#troubleshooting) · [Contributing](#contributing)
+
+</div>
+
+---
+
+## Features
+
+- **Automatic weather detection** — triggers effects based on live weather notifications
+- **Dynamic rain effects** — configurable intensity, droplet count, and wind direction
+- **Beautiful snow effects** — supports both lightweight ASCII and rich Unicode snowflakes (❄)
+- **Smooth transitions** — animated fade between weather states
+- **Performance-optimized** — tunable for Raspberry Pi and high-powered displays alike
+- **Flexible configuration** — fine-grained control over every visual parameter
+- **Custom keyword support** — adapt to any weather provider's terminology
+
+---
+
+## Visual Examples
+
+The module renders fullscreen weather overlays with configurable styles and intensities:
+
+### Rain Effect
+![Rain effect example](screenshots/rain.png)
+*Rain with configurable droplet count, speed, and wind direction*
+
+### Snow Effect — Light Mode
+![Simple snow effect](screenshots/light.png)
+*ASCII characters (`*`, `+`) — recommended for Raspberry Pi and low-power devices*
+
+### Snow Effect — Rich Mode
+![Decorative snow effect](screenshots/rich.png)
+*Unicode snowflakes (❄) — visually stunning on powerful displays*
+
+---
 
 ## Quick Start
 
-Add this minimal configuration to your `config/config.js` to get started:
+Add the following to your `config/config.js` to get started immediately:
 
 ```javascript
 {
     module: "MMM-WeatherEffects",
-    position: "fullscreen_above"  // This position is required
+    position: "fullscreen_above"  // Required position
 }
 ```
 
-That's it! The module will work with all default settings. See the Configuration section below for customization options.
+That's all! The module works out of the box with sensible defaults. See [Configuration Options](#configuration-options) for full customization.
 
-## Features
-- Automatic weather effect detection and display
-- Dynamic rain effects with wind direction support
-- Customizable snow effects with multiple styles
-- Smooth transitions between weather states
-- Performance-optimized animations
-- Real-time weather condition monitoring
-
-## Visual Examples
-
-The module supports various weather effects with different styles and intensities:
-
-### Rain Effect
-![Rain effect example](screenshots/rain.png)
-*Rain effect with configurable intensity and wind direction*
-
-### Simple Snow Effect (Light Mode)
-![Simple snow effect](screenshots/light.png)
-*Using simple ASCII characters (`*` and `+`) - ideal for lower-powered devices*
-
-### Decorative Snow Effect (Rich Mode)
-![Decorative snow effect](screenshots/rich.png)
-*Using snowflake characters (❄) - more visually appealing for powerful devices*
+---
 
 ## Installation
 
-### Step 1: Clone the Module
+### Step 1: Clone the Repository
+
 ```bash
 cd ~/MagicMirror/modules
 git clone https://github.com/cgillinger/MMM-WeatherEffects.git
 ```
 
-### Step 2: Configure Module
-After the minimal setup shown in Quick Start, you can customize the module using this full configuration example:
+### Step 2: Add to Your Config
+
+Add a full configuration block to `config/config.js`:
 
 ```javascript
 {
@@ -62,7 +87,7 @@ After the minimal setup shown in Quick Start, you can customize the module using
         rainConfig: {
             dropletCount: 50,
             dropletSpeed: 2.0,
-            windDirection: "none"  // none, left-to-right, right-to-left
+            windDirection: "none"  // "none" | "left-to-right" | "right-to-left"
         },
         snowConfig: {
             flakeCount: 25,
@@ -76,196 +101,191 @@ After the minimal setup shown in Quick Start, you can customize the module using
 }
 ```
 
+---
+
 ## Configuration Options
 
 ### General Settings
 
-| Option | Description | Default | Required | Notes |
-|--------|-------------|---------|----------|--------|
-| `enabled` | Enable/disable module | `true` | No | Master switch |
-| `intensity` | Effect intensity | `"auto"` | No | Options: "auto", "light", "medium", "heavy" |
-| `transitionDuration` | Effect transition time | `1000` | No | In milliseconds |
+| Option | Description | Default | Options |
+|--------|-------------|---------|---------|
+| `enabled` | Master on/off switch | `true` | `true` / `false` |
+| `intensity` | Effect intensity level | `"auto"` | `"auto"` `"light"` `"medium"` `"heavy"` |
+| `transitionDuration` | Transition time (ms) | `1000` | Any integer |
 
 ### Rain Settings (`rainConfig`)
 
-| Option | Description | Default | Required | Notes |
-|--------|-------------|---------|----------|--------|
-| `dropletCount` | Number of raindrops | `50` | No | Range: 1-200 |
-| `dropletSpeed` | Rain falling speed | `2.0` | No | Range: 0.1-5.0 |
-| `windDirection` | Rain angle | `"none"` | No | Options: "none", "left-to-right", "right-to-left" |
+| Option | Description | Default | Range |
+|--------|-------------|---------|-------|
+| `dropletCount` | Number of raindrops | `50` | 1–200 |
+| `dropletSpeed` | Falling speed multiplier | `2.0` | 0.1–5.0 |
+| `windDirection` | Rain angle / wind effect | `"none"` | `"none"` `"left-to-right"` `"right-to-left"` |
 
 ### Snow Settings (`snowConfig`)
 
-| Option | Description | Default | Required | Notes |
-|--------|-------------|---------|----------|--------|
-| `flakeCount` | Number of snowflakes | `25` | No | Range: 1-100 |
-| `characters` | Snowflake characters | `['*', '+']` | No | Array of characters |
-| `sparkleEnabled` | Enable sparkle effect | `false` | No | Visual enhancement |
-| `minSize` | Minimum flake size | `0.8` | No | In em units |
-| `maxSize` | Maximum flake size | `1.5` | No | In em units |
-| `speed` | Snow falling speed | `1.0` | No | Range: 0.1-5.0 |
+| Option | Description | Default | Range / Notes |
+|--------|-------------|---------|---------------|
+| `flakeCount` | Number of snowflakes | `25` | 1–100 |
+| `characters` | Snowflake characters | `['*', '+']` | Any character array |
+| `sparkleEnabled` | Glow/sparkle effect | `false` | `true` / `false` |
+| `minSize` | Minimum flake size (em) | `0.8` | Floating point |
+| `maxSize` | Maximum flake size (em) | `1.5` | Floating point |
+| `speed` | Falling speed multiplier | `1.0` | 0.1–5.0 |
 
-## CSS Customization
+---
 
-The module comes with default styling that you can customize by modifying the CSS. Here are some common customizations you might want to make:
+## Performance Recommendations
 
-### Rain Customization
-You can modify the rain appearance in your custom CSS:
+### Raspberry Pi and Low-Power Devices
 
-```css
-/* Make rain more visible */
-.rain-particle {
-    width: 4px;          /* Thickness of raindrops */
-    height: 16px;        /* Length of raindrops */
-    opacity: 0.8;        /* Transparency (0.0 to 1.0) */
-    background: linear-gradient(to bottom, #00aaff, transparent); /* Color of rain */
+Reduce particle counts and disable visual enhancements:
+
+```javascript
+config: {
+    rainConfig: {
+        dropletCount: 30
+    },
+    snowConfig: {
+        flakeCount: 15,
+        sparkleEnabled: false,
+        maxSize: 1.2
+    }
 }
 ```
 
-### Snow Customization
-For snow effects, you can adjust:
+### Powerful Displays (Desktop / High-End SBC)
+
+Enable rich snowflakes and sparkle for maximum visual impact:
+
+```javascript
+config: {
+    rainConfig: {
+        dropletCount: 100
+    },
+    snowConfig: {
+        flakeCount: 50,
+        characters: ['❄', '❆', '*'],
+        sparkleEnabled: true,
+        maxSize: 2.0
+    }
+}
+```
+
+---
+
+## CSS Customization
+
+Override default styles by creating a `custom.css` file in your MagicMirror `css/` directory.
+
+### Rain Appearance
 
 ```css
-/* Change snow appearance */
+.rain-particle {
+    width: 4px;
+    height: 16px;
+    opacity: 0.8;
+    background: linear-gradient(to bottom, #00aaff, transparent);
+}
+```
+
+### Snow Appearance
+
+```css
+/* Base snowflake style */
 .snow-particle {
-    color: white;        /* Default color of snowflakes */
-    opacity: 0.8;        /* Transparency (0.0 to 1.0) */
+    color: white;
+    opacity: 0.8;
 }
 
-/* Color variations for snowflakes */
-.snow-particle.blue-light {
-    color: #BDE3FF !important;  /* Light blue */
-}
-.snow-particle.blue-medium {
-    color: #99CCFF !important;  /* Medium blue */
-}
-.snow-particle.blue-dark {
-    color: #66A3FF !important;  /* Darker blue */
-}
-.snow-particle.crystal {
-    color: #F0F8FF !important;  /* Almost white */
-}
+/* Color variants */
+.snow-particle.blue-light  { color: #BDE3FF !important; }
+.snow-particle.blue-medium { color: #99CCFF !important; }
+.snow-particle.blue-dark   { color: #66A3FF !important; }
+.snow-particle.crystal     { color: #F0F8FF !important; }
 
-/* Enhance sparkle effect */
+/* Sparkle glow */
 .snow-particle.sparkle {
-    text-shadow: 0 0 8px rgba(255,255,255,0.8); /* Glow effect */
+    text-shadow: 0 0 8px rgba(255,255,255,0.8);
 }
 ```
 
 ### Animation Speed
-You can adjust the speed of effects in your CSS:
 
 ```css
-/* Slow down rain */
-.rain-particle {
-    animation-duration: 2s !important; /* Higher number = slower */
-}
+/* Slow down rain (higher = slower) */
+.rain-particle  { animation-duration: 2s !important; }
 
-/* Adjust snow fall speed */
-.snow-particle {
-    animation-duration: 5s !important; /* Higher number = slower */
-}
+/* Slow down snow */
+.snow-particle  { animation-duration: 5s !important; }
 ```
 
-To apply these customizations:
+> **Tip:** Start with small adjustments and test each change before applying more.
 
-1. Create a file named `custom.css` in your MagicMirror's `css` directory
-2. Add your desired CSS modifications
-3. Restart your MagicMirror
-
-Remember: Small changes can have a big impact on appearance. Start with small adjustments and test each change.
-
-## Performance Recommendations
-
-### For Low-Power Devices (e.g., Raspberry Pi)
-```javascript
-{
-    module: "MMM-WeatherEffects",
-    config: {
-        rainConfig: {
-            dropletCount: 30
-        },
-        snowConfig: {
-            flakeCount: 15,
-            sparkleEnabled: false,
-            maxSize: 1.2
-        }
-    }
-}
-```
-
-### For Powerful Devices
-```javascript
-{
-    module: "MMM-WeatherEffects",
-    config: {
-        rainConfig: {
-            dropletCount: 100
-        },
-        snowConfig: {
-            flakeCount: 50,
-            characters: ['❄', '❆', '*'],
-            sparkleEnabled: true,
-            maxSize: 2.0
-        }
-    }
-}
-```
+---
 
 ## Customizing Weather Detection
 
-The module includes a `weatherKeywords.json` file for customizing weather condition triggers. You can modify this to match your weather provider's terminology:
+The file `weather-keywords.json` maps weather condition strings to effects. Edit this to match your weather provider's terminology:
 
 ```json
 {
     "effects": {
-        "rain": [
-            "rain",
-            "showers",
-            "drizzle",
-            "precipitation"
-        ],
-        "snow": [
-            "snow",
-            "sleet",
-            "blizzard",
-            "flurries"
-        ]
+        "rain": ["rain", "showers", "drizzle", "precipitation"],
+        "snow": ["snow", "sleet", "blizzard", "flurries"]
     }
 }
 ```
 
+---
+
 ## Troubleshooting
 
-1. **No effects showing:**
-   - Verify your weather module is properly configured
-   - Check the weather type notifications in the console
-   - Try setting `enabled: true` explicitly
-   - Check if weatherKeywords.json matches your weather provider's terms
+### No effects are showing
+- Verify your weather module is correctly configured and running
+- Open the browser console and check for incoming weather notifications
+- Explicitly set `enabled: true` in your config
+- Confirm that `weather-keywords.json` includes your provider's condition strings
 
-2. **Performance issues:**
-   - Reduce `dropletCount`/`flakeCount`
-   - Disable special effects like sparkle
-   - Use simpler characters for snow
-   - Reduce max sizes
+### Poor performance / lag
+- Lower `dropletCount` and `flakeCount`
+- Disable `sparkleEnabled`
+- Switch to ASCII characters instead of Unicode snowflakes
+- Reduce `maxSize` values
 
-3. **Weather detection issues:**
-   - Check weather module configuration
-   - Verify weather data includes condition types
-   - Update weatherKeywords.json with your provider's terms
-   - Check console for weather notifications
+### Weather conditions not triggering effects
+- Check the browser console for notification payloads from your weather module
+- Verify the condition text matches entries in `weather-keywords.json`
+- Add any missing terms to the keywords file
+
+---
 
 ## Compatibility
-- MagicMirror²: >= 2.20.0
-- Weather Module: Any that emits weather type notifications
-- Browsers: All modern browsers supported
+
+| Component | Requirement |
+|-----------|-------------|
+| MagicMirror² | `>= 2.20.0` |
+| Weather Module | Any module that emits weather type notifications |
+| Browser | All modern browsers (Chrome, Firefox, Safari, Edge) |
+| Hardware | Raspberry Pi, desktop, or any device running MagicMirror² |
+
+---
 
 ## Contributing
-Issues and pull requests are welcome at [GitHub Issues](https://github.com/cgillinger/MMM-WeatherEffects/issues)
+
+Contributions, bug reports, and feature requests are welcome!
+
+- Open an issue: [GitHub Issues](https://github.com/cgillinger/MMM-WeatherEffects/issues)
+- Submit a pull request: [GitHub PRs](https://github.com/cgillinger/MMM-WeatherEffects/pulls)
+
+---
 
 ## Credits
-- Created by Christian Gillinger
-- Based on MagicMirror² by Michael Teeuw
+
+- Created by **Christian Gillinger**
+- Built on [MagicMirror²](https://magicmirror.builders) by Michael Teeuw
+
+---
 
 ## License
-MIT Licensed - See LICENSE file for details
+
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for full details.
