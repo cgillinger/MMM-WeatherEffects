@@ -19,6 +19,10 @@ _Automatically detects your current weather and renders stunning fullscreen anim
 
 ---
 
+> This is a personal hobby project I build for my own use and publish in case it's useful to someone else. I work on it in my spare time, so issues and PRs are welcome but replies may be slow. Use at your own risk.
+
+---
+
 ## Features
 
 - **Automatic weather detection** — triggers effects based on live weather notifications
