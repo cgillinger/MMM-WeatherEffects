@@ -3,7 +3,7 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/cgillinger/MMM-WeatherEffects)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/cgillinger/MMM-WeatherEffects)
 [![MagicMirror²](https://img.shields.io/badge/MagicMirror²-%3E%3D2.20.0-brightgreen.svg)](https://magicmirror.builders)
 [![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi%20%7C%20Desktop-lightgrey.svg)](https://github.com/cgillinger/MMM-WeatherEffects)
 [![GitHub Issues](https://img.shields.io/github/issues/cgillinger/MMM-WeatherEffects.svg)](https://github.com/cgillinger/MMM-WeatherEffects/issues)
@@ -26,7 +26,7 @@ _Automatically detects your current weather and renders stunning fullscreen anim
 ## Features
 
 - **Automatic weather detection** — triggers effects based on live weather notifications
-- **Dynamic rain effects** — configurable intensity, droplet count, and wind direction
+- **Dynamic rain effects** — configurable droplet count, speed, and wind direction
 - **Beautiful snow effects** — supports both lightweight ASCII and rich Unicode snowflakes (❄)
 - **Smooth transitions** — animated fade between weather states
 - **Performance-optimized** — tunable for Raspberry Pi and high-powered displays alike
@@ -60,7 +60,7 @@ Add the following to your `config/config.js` to get started immediately:
 ```javascript
 {
     module: "MMM-WeatherEffects",
-    position: "fullscreen_above"  // Required position
+    position: "fullscreen_above"  // Recommended — effects render as a fullscreen overlay regardless
 }
 ```
 
@@ -87,7 +87,6 @@ Add a full configuration block to `config/config.js`:
     position: "fullscreen_above",
     config: {
         enabled: true,
-        intensity: "auto",
         rainConfig: {
             dropletCount: 50,
             dropletSpeed: 2.0,
@@ -114,8 +113,9 @@ Add a full configuration block to `config/config.js`:
 | Option | Description | Default | Options |
 |--------|-------------|---------|---------|
 | `enabled` | Master on/off switch | `true` | `true` / `false` |
-| `intensity` | Effect intensity level | `"auto"` | `"auto"` `"light"` `"medium"` `"heavy"` |
 | `transitionDuration` | Transition time (ms) | `1000` | Any integer |
+
+> **Note:** `rainConfig` and `snowConfig` can be partial — any option you leave out keeps its default value.
 
 ### Rain Settings (`rainConfig`)
 
@@ -240,6 +240,8 @@ The file `weather-keywords.json` maps weather condition strings to effects. Edit
 }
 ```
 
+Changes are picked up automatically — no restart needed.
+
 ---
 
 ## Troubleshooting
@@ -271,6 +273,30 @@ The file `weather-keywords.json` maps weather condition strings to effects. Edit
 | Weather Module | Any module that emits weather type notifications |
 | Browser | All modern browsers (Chrome, Firefox, Safari, Edge) |
 | Hardware | Raspberry Pi, desktop, or any device running MagicMirror² |
+
+---
+
+## Changelog
+
+### v1.1.0 (2026-07-12)
+
+Bug-fix release — no configuration changes needed on your side.
+
+- **Custom weather keywords now actually work.** Two bugs prevented `weather-keywords.json` from ever being read: the helper file was named `node-helper.js` (MagicMirror² only loads `node_helper.js`), and it then looked for the file under the wrong name. Your customizations were silently ignored and a shorter built-in list was used instead. Both are fixed, and edits to the file are picked up without restarting the mirror.
+- **Effects no longer get stuck on screen.** When the weather changed rain → snow → rain, the previous effect was never cleaned up, leaving snow and rain running at the same time until reboot.
+- **Fixed a crash with partial configuration.** Setting e.g. only `snowConfig: { flakeCount: 15 }` crashed the snow effect. Any option you leave out now falls back to its default.
+- **Rain and snow now fall all the way to the bottom of the screen.** Particles used to vanish up to 200 px above the bottom edge.
+- **Fixed duplicated keyword loading** after browser reloads (each reload leaked a file watcher).
+- **Removed** the unused `intensity` option (it was documented but never implemented — leaving it in your config is harmless) and the broken `MMM-WeatherEffects_Alternate.js` file, which contained an old copy of this README rather than runnable code.
+
+### v1.0.1 (2026-01-11)
+
+- Fixed: portrait mode coverage — particles distributed across full screen height
+- Added: random vertical start positions and staggered animation delays
+
+### v1.0.0 (2024-12-28)
+
+- Initial release: rain effects with wind direction, multi-color snow, smooth transitions, weather condition detection
 
 ---
 

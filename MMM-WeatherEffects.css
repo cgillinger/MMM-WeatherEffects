@@ -100,7 +100,7 @@
         opacity: 1; /* Fully visible at the start */
     }
     100% {
-        transform: translateY(100vh); /* Moves raindrop to the bottom of the screen */
+        transform: translateY(calc(100vh + 220px)); /* Past the bottom edge — drops start up to 200px above the screen */
         opacity: 0.5; /* Fades slightly by the end */
     }
 }
@@ -110,7 +110,7 @@
         transform: translate(0, 0); /* Starts at original position */
     }
     100% {
-        transform: translate(30vw, 100vh); /* Moves diagonally to the right and down */
+        transform: translate(30vw, calc(100vh + 220px)); /* Moves diagonally to the right and down, past the bottom edge */
     }
 }
 
@@ -119,7 +119,7 @@
         transform: translate(0, 0); /* Starts at original position */
     }
     100% {
-        transform: translate(-30vw, 100vh); /* Moves diagonally to the left and down */
+        transform: translate(-30vw, calc(100vh + 220px)); /* Moves diagonally to the left and down, past the bottom edge */
     }
 }
 
@@ -140,7 +140,7 @@
         transform: translateY(-10px) rotate(0deg); /* Starts just above the screen */
     }
     100% {
-        transform: translateY(100vh) rotate(360deg); /* Falls to the bottom with a full rotation */
+        transform: translateY(calc(100vh + 220px)) rotate(360deg); /* Falls past the bottom edge with a full rotation */
     }
 }
 

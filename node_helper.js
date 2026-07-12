@@ -16,26 +16,26 @@ module.exports = NodeHelper.create({
     },
 
     loadWeatherKeywords: function() {
-        const keywordsPath = path.join(__dirname, "weatherKeywords.json");
-        
-        try {
-            // Initial load of keywords
-            this.readAndSendKeywords(keywordsPath);
-            
-            // Watch for file changes
-            fs.watch(keywordsPath, (eventType) => {
-                if (eventType === "change") {
-                    console.log("MMM-WeatherEffects: weatherKeywords.json changed, reloading...");
-                    this.readAndSendKeywords(keywordsPath);
-                }
-            });
-        } catch (err) {
-            console.error("MMM-WeatherEffects: Error setting up keyword monitoring:", err);
-            // Send default keywords if file operations fail
-            this.sendSocketNotification("WEATHER_KEYWORDS_LOADED", {
-                rain: ["rain", "showers", "drizzle", "precipitation"],
-                snow: ["snow", "sleet", "blizzard", "flurries"]
-            });
+        const keywordsFile = "weather-keywords.json";
+        const keywordsPath = path.join(__dirname, keywordsFile);
+
+        // Initial load of keywords (falls back to defaults internally on error)
+        this.readAndSendKeywords(keywordsPath);
+
+        // Watch for file changes — only once, even if multiple clients request keywords.
+        // Watching the directory (not the file) keeps the watcher alive when editors
+        // replace the file on save instead of writing to it in place.
+        if (!this.keywordsWatcher) {
+            try {
+                this.keywordsWatcher = fs.watch(__dirname, (eventType, filename) => {
+                    if (filename === keywordsFile) {
+                        console.log("MMM-WeatherEffects: " + keywordsFile + " changed, reloading...");
+                        this.readAndSendKeywords(keywordsPath);
+                    }
+                });
+            } catch (err) {
+                console.error("MMM-WeatherEffects: Error setting up keyword monitoring:", err);
+            }
         }
     },
 
