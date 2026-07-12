@@ -4,7 +4,7 @@
  * By Christian Gillinger
  * MIT Licensed.
  * 
- * Version: 1.0.1 (2026-01-11)
+ * Version: 1.1.0 (2026-07-12)
  * 
  * Description:
  * This module creates dynamic weather effects for MagicMirror², automatically
@@ -21,6 +21,14 @@
  * - Portrait and landscape mode support
  * 
  * Changelog:
+ * v1.1.0 (2026-07-12)
+ * - Fixed: node helper file renamed to node_helper.js so MagicMirror actually loads it
+ * - Fixed: keyword file read under its real name (weather-keywords.json)
+ * - Fixed: stuck/overlapping effects when weather changed back to an earlier effect
+ * - Fixed: crash when rainConfig/snowConfig were partially configured
+ * - Fixed: particles vanished up to 200px above the bottom edge
+ * - Removed: unused "intensity" option and broken _Alternate file
+ *
  * v1.0.1 (2026-01-11)
  * - Fixed: Portrait mode coverage - particles now distributed across full screen height
  * - Added: Random vertical start positions for particles
@@ -39,8 +47,7 @@
 Module.register("MMM-WeatherEffects", {
     defaults: {
         enabled: true,
-        intensity: "auto",    // auto, light, medium, heavy
-        
+
         // Rain settings
         rainConfig: {
             dropletCount: 50,
@@ -87,6 +94,13 @@ Module.register("MMM-WeatherEffects", {
     },
 
     validateConfig: function() {
+        // MagicMirror merges module config shallowly, so a partial rainConfig/snowConfig
+        // in config.js replaces the whole default object. Re-apply defaults per field.
+        const rcUser = (typeof this.config.rainConfig === "object" && this.config.rainConfig !== null) ? this.config.rainConfig : {};
+        const scUser = (typeof this.config.snowConfig === "object" && this.config.snowConfig !== null) ? this.config.snowConfig : {};
+        this.config.rainConfig = Object.assign({}, this.defaults.rainConfig, rcUser);
+        this.config.snowConfig = Object.assign({}, this.defaults.snowConfig, scUser);
+
         // Validate rain settings
         const rc = this.config.rainConfig;
         if (typeof rc.dropletCount !== "number" || rc.dropletCount < 1) {
@@ -94,6 +108,9 @@ Module.register("MMM-WeatherEffects", {
         }
         if (typeof rc.dropletSpeed !== "number" || rc.dropletSpeed <= 0) {
             rc.dropletSpeed = 2.0;
+        }
+        if (!["none", "left-to-right", "right-to-left"].includes(rc.windDirection)) {
+            rc.windDirection = "none";
         }
 
         // Validate snow settings
@@ -103,6 +120,19 @@ Module.register("MMM-WeatherEffects", {
         }
         if (typeof sc.speed !== "number" || sc.speed <= 0) {
             sc.speed = 1.0;
+        }
+        if (!Array.isArray(sc.characters) || sc.characters.length === 0) {
+            sc.characters = ['*', '+'];
+        }
+        if (typeof sc.minSize !== "number" || sc.minSize <= 0) {
+            sc.minSize = 0.8;
+        }
+        if (typeof sc.maxSize !== "number" || sc.maxSize < sc.minSize) {
+            sc.maxSize = Math.max(1.5, sc.minSize);
+        }
+
+        if (typeof this.config.transitionDuration !== "number" || this.config.transitionDuration < 0) {
+            this.config.transitionDuration = 1000;
         }
     },
 
@@ -114,7 +144,7 @@ Module.register("MMM-WeatherEffects", {
     },
 
     notificationReceived: function(notification, payload) {
-        if (notification === "CURRENTWEATHER_TYPE" && payload && payload.type) {
+        if (notification === "CURRENTWEATHER_TYPE" && payload && typeof payload.type === "string") {
             const weatherType = payload.type.toLowerCase();
             Log.info(`MMM-WeatherEffects: Received weather type: ${weatherType}`);
             this.handleWeatherChange(weatherType);
@@ -147,17 +177,16 @@ Module.register("MMM-WeatherEffects", {
 
     transitionTo: function(effectType) {
         if (this.currentEffect === effectType) return;
-        
+
         // Fade out current effect if exists
-        if (this.currentEffect && this.effectContainers[this.currentEffect]) {
-            const oldContainer = this.effectContainers[this.currentEffect];
+        const oldEffect = this.currentEffect;
+        if (oldEffect && this.effectContainers[oldEffect]) {
+            const oldContainer = this.effectContainers[oldEffect];
+            delete this.effectContainers[oldEffect];
             oldContainer.style.opacity = '0';
-            setTimeout(() => {
-                oldContainer.remove();
-                delete this.effectContainers[this.currentEffect];
-            }, this.config.transitionDuration);
+            setTimeout(() => oldContainer.remove(), this.config.transitionDuration);
         }
-        
+
         // Start new effect
         this.currentEffect = effectType;
         this.startEffect(effectType);
