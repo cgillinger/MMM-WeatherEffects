@@ -149,30 +149,51 @@ Module.register("MMM-WeatherEffects", {
             Log.info(`MMM-WeatherEffects: Received weather type: ${weatherType}`);
             this.handleWeatherChange(weatherType);
         }
+        // MMM-OpenWeatherForecast and other modules with OpenWeatherMap One Call data
+        if (notification === "OPENWEATHER_FORECAST_WEATHER_UPDATE") {
+            const weather = payload && payload.current && Array.isArray(payload.current.weather) ? payload.current.weather[0] : null;
+            if (!weather) return;
+            // "main" is always English (e.g. "Snow"), "description" uses the configured language
+            const weatherType = [weather.main, weather.description].filter(text => typeof text === "string").join(" ").toLowerCase();
+            Log.info(`MMM-WeatherEffects: Received OpenWeather condition: ${weatherType}`);
+            this.handleWeatherChange(weatherType);
+        }
     },
 
     handleWeatherChange: function(weatherType) {
         if (!this.config.enabled) return;
 
-        if (this.isRainCondition(weatherType)) {
-            this.transitionTo('rain');
-        } else if (this.isSnowCondition(weatherType)) {
-            this.transitionTo('snow');
+        const effect = this.getEffectForWeather(weatherType);
+        if (effect) {
+            this.transitionTo(effect);
         } else {
             this.clearEffects();
         }
     },
 
+    // The longest matching keyword wins, so "snow_showers" is snow and not
+    // rain because of "showers". On a tie, snow wins (e.g. "rain_and_snow").
+    getEffectForWeather: function(weatherType) {
+        const rainMatch = this.getLongestMatch(weatherType, this.weatherKeywords.rain);
+        const snowMatch = this.getLongestMatch(weatherType, this.weatherKeywords.snow);
+        if (snowMatch > 0 && snowMatch >= rainMatch) return 'snow';
+        if (rainMatch > 0) return 'rain';
+        return null;
+    },
+
+    getLongestMatch: function(weatherType, keywords) {
+        return keywords.reduce((longest, keyword) => {
+            const word = keyword.toLowerCase();
+            return weatherType.includes(word) ? Math.max(longest, word.length) : longest;
+        }, 0);
+    },
+
     isRainCondition: function(weatherType) {
-        return this.weatherKeywords.rain.some(keyword => 
-            weatherType.includes(keyword.toLowerCase())
-        );
+        return this.getEffectForWeather(weatherType) === 'rain';
     },
 
     isSnowCondition: function(weatherType) {
-        return this.weatherKeywords.snow.some(keyword => 
-            weatherType.includes(keyword.toLowerCase())
-        );
+        return this.getEffectForWeather(weatherType) === 'snow';
     },
 
     transitionTo: function(effectType) {

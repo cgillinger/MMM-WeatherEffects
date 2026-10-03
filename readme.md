@@ -242,6 +242,19 @@ The file `weather-keywords.json` maps weather condition strings to effects. Edit
 
 Changes are picked up automatically — no restart needed.
 
+If keywords of both effects match, the longest matching keyword wins, so `snow_showers` shows snow and not rain. If both are equally long, snow wins.
+
+The module reacts to these notifications:
+
+- `CURRENTWEATHER_TYPE` from the default weather module
+- `OPENWEATHER_FORECAST_WEATHER_UPDATE` from [MMM-OpenWeatherForecast](https://github.com/jclarke0000/MMM-OpenWeatherForecast) and similar modules. The English condition (`main`) and the localized description are both checked, so localized keywords work as well.
+
+---
+
+## Testing
+
+Run `node --test` in the module directory.
+
 ---
 
 ## Troubleshooting
